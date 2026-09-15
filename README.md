@@ -41,19 +41,49 @@ kubectl get replicaset
 kubectl get rs
 ```
 ```
-                    Kubernetes Cluster
-                           │
-             ┌─────────────┴─────────────┐
-             │                           │
-       Control Plane                 Worker Nodes
-             │                           │
-     ┌───────┼────────┐          ┌───────┼────────┐
-     │       │        │          │       │        │
- API Server Scheduler Controllers kubelet kube-proxy Runtime
-     │
-    etcd
+                                         Kubernetes Cluster
+                                               │
+                                 ┌─────────────┴─────────────┐
+                                 │                           │
+                           Control Plane                 Worker Nodes
+                                 │                           │
+                         ┌───────┼────────┐          ┌───────┼────────┐
+                         │       │        │          │       │        │
+                     API Server Scheduler Controllers kubelet kube-proxy Runtime
+                         │
+                        etcd
 ```
 
+```
+                                           ┌──────────────────────┐
+                                           │    Control Plane     │
+                                           │                      │
+                          kubectl ───────► │  API Server          │
+                                           │      │               │
+                                           │      ├── etcd        │
+                                           │      ├── Scheduler   │
+                                           │      └── Controllers │
+                                           └──────────┬───────────┘
+                                                      │
+                                                      │ API
+                                                      ▼
+                                           ┌──────────────────────┐
+                                           │     Worker Node      │
+                                           │                      │
+                                           │ kubelet              │
+                                           │ kube-proxy           │
+                                           │ container runtime    │
+                                           │                      │
+                                           │ ┌────┐ ┌────┐ ┌────┐ │
+                                           │ │Pod │ │Pod │ │Pod │ │
+                                           │ └────┘ └────┘ └────┘ │
+                                           └──────────────────────┘
+                          
+                          
+                          
+                          
+
+```
 ### Describe ReplicaSet
 - Describe the newly created ReplicaSet
 ```
